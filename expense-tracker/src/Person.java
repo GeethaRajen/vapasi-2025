@@ -10,16 +10,16 @@ public class Person {
         this.expenseList = new ArrayList<>();
     }
 
-    public void addExpense(Expense e){
+    public void addExpense(Expense e) {
         expenseList.add(e);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<Expense> getExpenseList() {
-        return expenseList;
+    public String getConsolidatedExpense() {
+        final String[] txn = {""};
+        expenseList.forEach((expense) ->
+            txn[0] += expense.paidTo() + " pays " + name + " " + expense.amt() + System.lineSeparator()
+        );
+        return txn[0];
     }
 
     @Override

@@ -16,21 +16,22 @@ public class ExpenseTracker {
     }
 
     public List<Person> readExpensesFromFile() {
-        try (Stream<String> lines = Files.lines(Path.of("expense-tracker/src/Transactions.txt"))) {
-            return lines.map((s) -> {
-                String[] items = s.split(" ");
-                String name = items[0];
-                Person p = new Person(name);
+        LOG.info("Reading expenses from file and creating objects");
+        try (Stream<String> expenseLines = Files.lines(Path.of("expense-tracker/src/transactions.txt"))) {
+            return expenseLines.map((s) -> {
+                String[] expenseItems = s.split(" ");
+                String name = expenseItems[0];
+                Person person = new Person(name);
 
-                String[] friends = items[6].split(",");
-                Float amt = Float.parseFloat(items[2]) / friends.length;
-                for (String friend : friends) {
+                String[] spentForFriends = expenseItems[6].split(",");
+                Float amtSpentForEach = Float.parseFloat(expenseItems[2]) / spentForFriends.length;
+                for (String friend : spentForFriends) {
                     friend = friend.trim();
                     if (!friend.equals(name)) {
-                        p.addExpense(new Expense(friend, amt));
+                        person.addExpense(new Expense(friend, amtSpentForEach));
                     }
                 }
-                return p;
+                return person;
             }).toList();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -40,12 +41,8 @@ public class ExpenseTracker {
     public void printTransactions(List<Person> personList) {
         LOG.info("List of transactions -");
 
-        for (Person p : personList) {
-
-            p.getExpenseList().forEach((e) -> {
-                String txn = e.getPaidTo() + " pays " + p.getName() + " " + e.getAmt();
-                LOG.info(txn);
-            });
+        for (Person person : personList) {
+            LOG.info(person.getConsolidatedExpense());
         }
     }
 }
