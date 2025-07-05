@@ -1,0 +1,6 @@
+A spent 100 for Snacks for A,B
+B spent 500 for Taxi for C,D
+D spent 300 for Bus for A,B
+C spent 200 for Auto for E,F,G
+F spent 1000 for Lunch for A,B,G
+E spent 2000 for Room for E,C,D
