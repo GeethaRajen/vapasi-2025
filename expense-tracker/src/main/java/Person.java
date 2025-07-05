@@ -14,6 +14,14 @@ public class Person {
         expenseList.add(e);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Expense> getExpenseList() {
+        return expenseList;
+    }
+
     public String getConsolidatedExpense() {
         final String[] txn = {""};
         expenseList.forEach((expense) ->

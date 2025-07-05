@@ -11,13 +11,14 @@ public class ExpenseTracker {
 
     public static void main(String[] args) {
         ExpenseTracker demo = new ExpenseTracker();
-        List<Person> personList = demo.readExpensesFromFile();
+        String path = "expense-tracker/src/main/resources/transactions.txt";
+        List<Person> personList = demo.readExpensesFromFile(path);
         demo.printTransactions(personList);
     }
 
-    public List<Person> readExpensesFromFile() {
+    public List<Person> readExpensesFromFile(String path) {
         LOG.info("Reading expenses from file and creating objects");
-        try (Stream<String> expenseLines = Files.lines(Path.of("expense-tracker/src/transactions.txt"))) {
+        try (Stream<String> expenseLines = Files.lines(Path.of(path))) {
             return expenseLines.map((s) -> {
                 String[] expenseItems = s.split(" ");
                 String name = expenseItems[0];
