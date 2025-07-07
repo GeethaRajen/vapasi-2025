@@ -14,7 +14,7 @@ class PersonTest {
     }
 
     @Test
-    void getConsolidatedExpense() {
+    void shouldReturnExpectedConsolidatedExpenseStatement() {
         String expected = "B pays " + p.getName() + " " + p.getExpenseList().getFirst().amt() + System.lineSeparator();
         Assertions.assertEquals(expected, p.getConsolidatedExpense());
     }
