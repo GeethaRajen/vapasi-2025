@@ -10,12 +10,12 @@ class PersonTest {
     @BeforeAll
     public static void init(){
         p = new Person("A");
-        p.addExpense(new Expense("B",50f));
+        p.addExpense("B",50f);
     }
 
     @Test
     void shouldReturnExpectedConsolidatedExpenseStatement() {
-        String expected = "B pays " + p.getName() + " " + p.getExpenseList().getFirst().amt() + System.lineSeparator();
+        String expected = "B pays " + p.getName() + " " + p.getExpenseMap().values().toArray()[0] + System.lineSeparator();
         Assertions.assertEquals(expected, p.getConsolidatedExpense());
     }
 }

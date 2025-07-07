@@ -1,49 +1,47 @@
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
+import java.util.Collection;
 
 class ExpenseTrackerTest {
 
     private static ExpenseTracker tracker;
+    private Person person;
+    private String path;
 
     @BeforeAll
     public static void init(){
         tracker = new ExpenseTracker();
     }
 
-    @Test
-    void shouldReturnOneMatchingProductFromFile() {
-        String path = "src/test/java/transactions1.txt";
-
-        List<Person> list = tracker.readExpensesFromFile(path);
-        assertEquals(1, list.size());
-
-        Person p = new Person("A");
-        Expense e = new Expense("B",50f);
-        p.addExpense(e);
-        assertEquals(list.getFirst().toString(),p.toString());
+    @BeforeEach
+    public void initEach(){
+        person = new Person("A");
+        person.addExpense("B",50f);
+        path = "src/test/java/transactions1.txt";
     }
 
     @Test
-    void shouldReturnSixProductsFromFile() {
-        String path = "src/test/java/transactions2.txt";
+    void shouldReturnOneMatchingProductFromFile() {
+        Collection<Person> personSet = tracker.readExpensesFromFile(path);
+        assertEquals(1, personSet.size());
+        assertEquals(personSet.toArray()[0].toString(),person.toString());
+    }
 
-        List<Person> list = tracker.readExpensesFromFile(path);
-        assertEquals(6, list.size());
+    @Test
+    void shouldReturnFiveProductsFromFile() {
+        String path = "src/test/java/transactions2.txt";
+        Collection<Person> personSet = tracker.readExpensesFromFile(path);
+        assertEquals(5, personSet.size());
     }
 
     @Test
     void shouldNotHaveExpenseRecordForSpenderHimself(){
-        String path = "src/test/java/transactions1.txt";
-
-        List<Person> list = tracker.readExpensesFromFile(path);
-        assertEquals(1, list.size());
-
-        Person p = new Person("A");
-        Expense e = new Expense("B",50f);
-        p.addExpense(e);
-        assertNotEquals("A",list.getFirst().getExpenseList().getFirst().paidTo());
+        Collection<Person> personSet = tracker.readExpensesFromFile(path);
+        Person p = (Person)personSet.toArray()[0];
+        String paidTo = (String)p.getExpenseMap().keySet().toArray()[0];
+        assertNotEquals(person.getName(),paidTo);
     }
 }
